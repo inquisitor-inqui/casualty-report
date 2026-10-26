@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit Icon Set · Casualty Report</title>
+<meta name="description" content="The 34 unit silhouettes and the colour and type tokens used by Casualty Report.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='1' y='1' width='14' height='14' rx='3' fill='%23e8590c'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="title-block">
+    <a class="back" href="index.html">← Casualty Report</a>
+    <h1>Unit icon set</h1>
+    <p class="lede">34 flat silhouettes on a 48 px grid. One fill colour per category, 2–3.5 px strokes for barrels and rigging, wheels cut out so they read on any background. Same asset at 48 px (cards) and 20 px (tables, log).</p>
+  </header>
+
+  <div id="icon-groups" style="display:contents"></div>
+
+  <section class="tokens">
+    <div class="card token-card">
+      <div class="eyebrow">Colour tokens</div>
+      <div class="token-list">
+        <div><span class="swatch" style="background:oklch(0.985 0.004 70);border:1px solid oklch(0.9 0.008 70)"></span>bg · oklch(0.985 0.004 70)</div>
+        <div><span class="swatch" style="background:#fff;border:1px solid oklch(0.9 0.008 70)"></span>card · #fff · border oklch(0.9 0.008 70)</div>
+        <div><span class="swatch" style="background:oklch(0.2 0.01 60)"></span>ink · oklch(0.2 0.01 60)</div>
+        <div><span class="swatch" style="background:oklch(0.5 0.01 60)"></span>muted · oklch(0.5 0.01 60)</div>
+        <div><span class="swatch" style="background:oklch(0.66 0.19 50)"></span>accent · oklch(0.66 0.19 50)</div>
+        <div><span class="swatch" style="background:oklch(0.95 0.04 50)"></span>accent soft · oklch(0.95 0.04 50) · chip text oklch(0.52 0.17 50)</div>
+        <div><span class="swatch" style="background:oklch(0.48 0.09 130)"></span>ground · oklch(0.48 0.09 130) · soft 0.96 0.02</div>
+        <div><span class="swatch" style="background:oklch(0.48 0.09 230)"></span>air · oklch(0.48 0.09 230)</div>
+        <div><span class="swatch" style="background:oklch(0.48 0.09 275)"></span>naval · oklch(0.48 0.09 275)</div>
+        <div><span class="swatch" style="background:oklch(0.94 0.006 70)"></span>+0 chip · oklch(0.94 0.006 70) / text oklch(0.62 0.01 60)</div>
+      </div>
+    </div>
+    <div class="card token-card">
+      <div class="eyebrow">Type tokens</div>
+      <div class="type-list">
+        <div><span style="font-weight:800;font-size:22px;letter-spacing:-0.02em">Public Sans</span> <span style="color:oklch(0.5 0.01 60)">· UI and headings · 800 title 30, 700 h2 22, 600 labels 14, 500 body 13–15</span></div>
+        <div><span class="mono" style="font-weight:700;font-size:22px;letter-spacing:-0.04em">0123456789</span> <span style="color:oklch(0.5 0.01 60)">· JetBrains Mono, tabular-nums · hero 52, card count 28, division total 18, chips 12–13, axes 11</span></div>
+        <div style="color:oklch(0.5 0.01 60)">Eyebrows: 12 px, 600, uppercase, 0.08em tracking. Radii: cards 14, icon wells 12, chips pill. Shadow: 0 1px 2px rgba(30,20,10,.04) over a 1 px border.</div>
+      </div>
+    </div>
+  </section>
+</div>
+<script src="icons.js"></script>
+<script>
+(function () {
+  var I = window.CasualtyIcons;
+  document.getElementById('icon-groups').innerHTML = ['ground', 'air', 'naval'].map(function (k) {
+    var cat = I.CATS[k];
+    var units = I.UNITS.filter(function (u) { return u.cat === k; });
+    return '<section class="icon-section"><div class="group-head">' +
+      '<span class="group-swatch" style="background:' + cat.color + '"></span>' +
+      '<span class="group-label">' + cat.label + '</span>' +
+      '<span class="group-total" style="font-weight:500">' + units.length + '</span>' +
+      '<span class="group-rule"></span>' +
+      '<span class="mono" style="font-size:12px;color:oklch(0.6 0.01 60)">' + cat.color + '</span></div>' +
+      '<div class="icon-grid">' + units.map(function (u) {
+        var src = I.iconUrl(u, cat.color);
+        return '<div class="card icon-card"><div class="icon-well" style="background:' + cat.soft + '">' +
+          '<img class="icon" src="' + src + '" alt="' + u.name + '" width="96" height="96"></div>' +
+          '<div class="icon-caption"><img class="icon" src="' + src + '" alt="" width="20" height="20"><span>' + u.name + '</span></div></div>';
+      }).join('') + '</div></section>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

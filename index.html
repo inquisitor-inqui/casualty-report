@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  // Fill in after the first deploy (no trailing slash). The build turns the relative
+  // og:/twitter: URLs below into absolute ones using this value.
+  var SITE_URL = "https://YOUR-SITE.netlify.app";
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Casualty Report</title>
+<meta name="description" content="Enemy losses in our Call of War match, tracked daily: every unit destroyed, by type, by division and by day.">
+<meta name="theme-color" content="#fbf9f6">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Casualty Report">
+<meta property="og:title" content="Casualty Report">
+<meta property="og:description" content="Enemy losses — tracked daily. Every unit destroyed, by type, by division and by day.">
+<meta property="og:url" content="./">
+<meta property="og:image" content="og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Casualty Report: enemy losses, tracked daily">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Casualty Report">
+<meta name="twitter:description" content="Enemy losses — tracked daily.">
+<meta name="twitter:image" content="og-image.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='1' y='1' width='14' height='14' rx='3' fill='%23e8590c'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="page">
+  <div class="wrap">
+
+    <header class="header">
+      <div class="header-top">
+        <div class="title-block">
+          <div class="title-row">
+            <span class="mark"></span>
+            <h1>Casualty Report</h1>
+          </div>
+          <p class="subtitle" id="subtitle">Enemy losses</p>
+        </div>
+        <div class="status">
+          <div class="status-row">
+            <span class="status-dot" id="status-dot"></span>
+            <span id="status-text">Call of War</span>
+          </div>
+          <span class="updated" id="updated"></span>
+        </div>
+      </div>
+      <nav class="tabs" id="tabs" aria-label="Nations"></nav>
+    </header>
+
+    <section class="hero" id="hero" aria-label="Headline stats"></section>
+
+    <section class="units" aria-labelledby="units-heading">
+      <div class="section-head">
+        <div class="heading">
+          <div class="eyebrow">Losses by unit type</div>
+          <h2 id="units-heading">What the enemy has lost so far</h2>
+        </div>
+        <button class="toggle" id="zero-toggle" type="button" hidden></button>
+      </div>
+      <div class="units" id="unit-groups"></div>
+    </section>
+
+    <section class="card panel" aria-labelledby="chart-heading">
+      <div class="section-head">
+        <div class="heading">
+          <div class="eyebrow">Kills per day</div>
+          <h2 id="chart-heading">Units destroyed per game day</h2>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div id="chart"></div>
+    </section>
+
+    <section class="split">
+      <div class="card panel tight" aria-labelledby="div-heading">
+        <div class="heading">
+          <div class="eyebrow">Losses by enemy division</div>
+          <h2 id="div-heading">Ranked by units lost</h2>
+        </div>
+        <div class="div-list" id="divisions"></div>
+      </div>
+
+      <div class="card panel tight" aria-labelledby="log-heading">
+        <div class="heading">
+          <div class="eyebrow">Daily log</div>
+          <h2 id="log-heading">Every engagement, on record</h2>
+        </div>
+        <div class="log" id="log"></div>
+      </div>
+    </section>
+
+    <details class="unparsed" id="unparsed" hidden></details>
+
+    <footer class="footer">
+      <strong id="footer-day">Last updated</strong>
+      <span>Compiled from battle reports. Every unit you field is counted. <a href="icons.html">Icon set →</a></span>
+    </footer>
+  </div>
+</div>
+<noscript><p style="text-align:center;font-family:sans-serif">Casualty Report needs JavaScript to tally the battle reports.</p></noscript>
+<script src="data.js"></script>
+<script src="icons.js"></script>
+<script src="parse.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
