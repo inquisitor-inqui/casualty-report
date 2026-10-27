@@ -1,0 +1,40 @@
+# Runs the tests and the build on every pull request into main.
+# The built site is attached to the run as an artifact, so you can download and preview it.
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # build.sh runs tests/parse.test.js first and stops if it fails.
+      - name: Test and build
+        run: bash build.sh
+
+      - name: Check the build output
+        run: |
+          test -f dist/site/index.html
+          unzip -l dist/casualty-report.zip | awk '{print $4}' | grep -qx 'index.html'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: casualty-report-site
+          path: dist/site/
+          retention-days: 14
