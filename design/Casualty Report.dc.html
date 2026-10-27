@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; background: oklch(0.985 0.004 70); color: oklch(0.2 0.01 60); font-family: 'Public Sans', 'Helvetica Neue', Helvetica, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: oklch(0.66 0.19 50); text-decoration: none; }
+  a:hover { color: oklch(0.55 0.19 50); text-decoration: underline; }
+  button { font: inherit; cursor: pointer; }
+</style>
+</helmet>
+<div style="min-height:100vh;">
+  <div style="max-width:1200px;margin:0 auto;padding:28px 24px 64px;display:flex;flex-direction:column;gap:40px;">
+
+    <header style="display:flex;flex-direction:column;gap:20px;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="width:14px;height:14px;background:oklch(0.66 0.19 50);border-radius:3px;display:inline-block;"></span>
+            <h1 style="margin:0;font-size:30px;font-weight:800;letter-spacing:-0.02em;line-height:1;">Casualty Report</h1>
+          </div>
+          <p style="margin:0;font-size:15px;color:oklch(0.5 0.01 60);padding-left:26px;">Enemy losses · Day 9</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:oklch(0.5 0.01 60);">
+          <span style="width:8px;height:8px;border-radius:50%;background:oklch(0.66 0.19 50);display:inline-block;"></span>
+          <span>Tracking live · Call of War</span>
+        </div>
+      </div>
+      <nav style="display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;border-bottom:1px solid oklch(0.9 0.008 70);">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2">
+          <sc-if value="{{ t.active }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ t.select }}" style="border:0;background:transparent;padding:10px 14px 12px;font-size:14px;font-weight:600;color:oklch(0.2 0.01 60);border-bottom:2px solid oklch(0.2 0.01 60);margin-bottom:-1px;white-space:nowrap;display:flex;align-items:center;gap:8px;">{{ t.label }}<span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:oklch(0.66 0.19 50);">{{ t.count }}</span></button>
+          </sc-if>
+          <sc-if value="{{ t.inactive }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ t.select }}" style="border:0;background:transparent;padding:10px 14px 12px;font-size:14px;font-weight:500;color:oklch(0.5 0.01 60);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;display:flex;align-items:center;gap:8px;" style-hover="color:oklch(0.2 0.01 60)">{{ t.label }}<span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:oklch(0.6 0.01 60);">{{ t.count }}</span></button>
+          </sc-if>
+        </sc-for>
+      </nav>
+    </header>
+
+    <section data-screen-label="Hero stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+      <sc-for list="{{ hero }}" as="h" hint-placeholder-count="4">
+        <div style="background:#fff;border:1px solid oklch(0.9 0.008 70);border-radius:14px;padding:22px 24px;display:flex;flex-direction:column;gap:14px;box-shadow:0 1px 2px rgba(30,20,10,0.04);">
+          <div style="font-size:13px;font-weight:500;color:oklch(0.5 0.01 60);min-height:36px;line-height:1.4;">{{ h.label }}</div>
+          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:52px;font-weight:700;line-height:1;letter-spacing:-0.04em;color:oklch(0.66 0.19 50);font-variant-numeric:tabular-nums;">{{ h.value }}</span>
+            <sc-if value="{{ h.accent }}" hint-placeholder-val="{{ true }}">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:3px 8px;border-radius:999px;background:oklch(0.95 0.04 50);color:oklch(0.52 0.17 50);">{{ h.chip }}</span>
+            </sc-if>
+            <sc-if value="{{ h.neutral }}" hint-placeholder-val="{{ false }}">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:3px 8px;border-radius:999px;background:oklch(0.94 0.006 70);color:oklch(0.5 0.01 60);">{{ h.chip }}</span>
+            </sc-if>
+          </div>
+          <div style="font-size:12px;color:oklch(0.6 0.01 60);">{{ h.note }}</div>
+        </div>
+      </sc-for>
+    </section>
+
+    <section data-screen-label="Losses by unit type" style="display:flex;flex-direction:column;gap:28px;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:oklch(0.5 0.01 60);">Losses by unit type</div>
+          <h2 style="margin:0;font-size:22px;font-weight:700;letter-spacing:-0.01em;">What North Brazil has lost so far</h2>
+        </div>
+        <sc-if value="{{ showZeroToggle }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ toggleZero }}" style="border:1px solid oklch(0.88 0.008 70);background:#fff;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:500;color:oklch(0.35 0.01 60);display:flex;align-items:center;gap:8px;" style-hover="border-color:oklch(0.7 0.01 60)">{{ zeroToggleLabel }}</button>
+        </sc-if>
+      </div>
+      <sc-if value="{{ loaded }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ groups }}" as="g" hint-placeholder-count="0">
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="width:10px;height:10px;border-radius:3px;display:inline-block;background:{{ g.color }};"></span>
+            <span style="font-size:15px;font-weight:700;">{{ g.label }}</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:oklch(0.5 0.01 60);">{{ g.total }}</span>
+            <span style="flex:1;height:1px;background:oklch(0.9 0.008 70);"></span>
+            <span style="font-size:12px;color:oklch(0.6 0.01 60);">{{ g.meta }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(156px,1fr));gap:12px;">
+            <sc-for list="{{ g.units }}" as="u" hint-placeholder-count="0">
+              <sc-if value="{{ u.pos }}" hint-placeholder-val="{{ true }}">
+                <div style="background:#fff;border:1px solid oklch(0.9 0.008 70);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:14px;box-shadow:0 1px 2px rgba(30,20,10,0.04);">
+                  <div style="width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:{{ u.soft }};">
+                    {{ u.img }}
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:4px;">
+                    <div style="font-size:13px;font-weight:500;color:oklch(0.35 0.01 60);">{{ u.name }}</div>
+                    <div style="display:flex;align-items:baseline;gap:8px;">
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;line-height:1;letter-spacing:-0.03em;font-variant-numeric:tabular-nums;">{{ u.count }}</span>
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;padding:2px 7px;border-radius:999px;background:oklch(0.95 0.04 50);color:oklch(0.52 0.17 50);">{{ u.chip }}</span>
+                    </div>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ u.zero }}" hint-placeholder-val="{{ false }}">
+                <div style="background:transparent;border:1px dashed oklch(0.88 0.008 70);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:14px;">
+                  <div style="width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:oklch(0.955 0.005 70);">
+                    {{ u.imgMuted }}
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:4px;">
+                    <div style="font-size:13px;font-weight:500;color:oklch(0.55 0.01 60);">{{ u.name }}</div>
+                    <div style="display:flex;align-items:baseline;gap:8px;">
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;line-height:1;letter-spacing:-0.03em;color:oklch(0.75 0.01 60);font-variant-numeric:tabular-nums;">0</span>
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;padding:2px 7px;border-radius:999px;background:oklch(0.94 0.006 70);color:oklch(0.62 0.01 60);">+0</span>
+                    </div>
+                  </div>
+                </div>
+              </sc-if>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for></sc-if>
+    </section>
+
+    <section data-screen-label="Kills per day" style="background:#fff;border:1px solid oklch(0.9 0.008 70);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:20px;box-shadow:0 1px 2px rgba(30,20,10,0.04);">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:oklch(0.5 0.01 60);">Kills per day</div>
+          <h2 style="margin:0;font-size:22px;font-weight:700;letter-spacing:-0.01em;">Units destroyed per game day</h2>
+        </div>
+        <div style="display:flex;gap:18px;font-size:12px;color:oklch(0.5 0.01 60);">
+          <span style="display:flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:3px;background:oklch(0.66 0.19 50);display:inline-block;"></span>Per day</span>
+          <span style="display:flex;align-items:center;gap:6px;"><span style="width:14px;height:2px;background:oklch(0.2 0.01 60);display:inline-block;"></span>Cumulative</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:40px 1fr 40px;gap:12px;">
+        <div style="position:relative;height:220px;font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.6 0.01 60);">
+          <span style="position:absolute;top:-6px;right:0;">{{ chartMax }}</span>
+          <span style="position:absolute;top:50%;margin-top:-6px;right:0;">{{ chartMid }}</span>
+          <span style="position:absolute;bottom:-6px;right:0;">0</span>
+        </div>
+        <div ref="{{ plotRef }}" style="position:relative;height:220px;border-bottom:1px solid oklch(0.88 0.008 70);">
+          <div style="position:absolute;left:0;right:0;top:0;border-top:1px dashed oklch(0.92 0.006 70);"></div>
+          <div style="position:absolute;left:0;right:0;top:50%;border-top:1px dashed oklch(0.92 0.006 70);"></div>
+          <div style="position:absolute;inset:0;display:flex;align-items:flex-end;gap:6px;">
+            <sc-for list="{{ bars }}" as="b" hint-placeholder-count="1">
+              <div title="{{ b.title }}" style="flex:1 1 0;max-width:{{ barMax }};height:100%;display:flex;align-items:flex-end;">
+                <div style="width:100%;border-radius:4px 4px 0 0;background:oklch(0.66 0.19 50);height:{{ b.hPct }}%;min-height:2px;"></div>
+              </div>
+            </sc-for>
+          </div>
+          <svg viewBox="{{ chartViewBox }}" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;">
+            <polyline points="{{ linePoints }}" fill="none" stroke="oklch(0.2 0.01 60)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"></polyline>
+          </svg>
+          <sc-for list="{{ dots }}" as="d" hint-placeholder-count="1">
+            <div style="position:absolute;width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid oklch(0.2 0.01 60);transform:translate(-50%,50%);left:{{ d.x }};bottom:{{ d.y }};"></div>
+          </sc-for>
+        </div>
+        <div style="position:relative;height:220px;font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.6 0.01 60);">
+          <span style="position:absolute;top:-6px;left:0;">{{ cumMax }}</span>
+          <span style="position:absolute;bottom:-6px;left:0;">0</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:40px 1fr 40px;gap:12px;">
+        <span></span>
+        <div style="display:flex;gap:6px;">
+          <sc-for list="{{ bars }}" as="b" hint-placeholder-count="1">
+            <div style="flex:1 1 0;max-width:{{ barMax }};text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.5 0.01 60);white-space:nowrap;">{{ b.label }}</div>
+          </sc-for>
+        </div>
+        <span></span>
+      </div>
+    </section>
+
+    <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:16px;align-items:start;">
+      <div data-screen-label="Losses by enemy division" style="background:#fff;border:1px solid oklch(0.9 0.008 70);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:18px;box-shadow:0 1px 2px rgba(30,20,10,0.04);">
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:oklch(0.5 0.01 60);">Losses by enemy division</div>
+          <h2 style="margin:0;font-size:22px;font-weight:700;letter-spacing:-0.01em;">Ranked by units lost</h2>
+        </div>
+        <div style="display:flex;flex-direction:column;">
+          <sc-for list="{{ divisions }}" as="dv" hint-placeholder-count="0">
+            <div style="display:grid;grid-template-columns:24px 1fr auto;gap:4px 12px;padding:12px 0;border-top:1px solid oklch(0.93 0.006 70);align-items:center;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:oklch(0.6 0.01 60);">{{ dv.rank }}</span>
+              <span style="font-size:14px;font-weight:600;">{{ dv.name }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;text-align:right;">{{ dv.total }}</span>
+              <span></span>
+              <div style="height:4px;border-radius:2px;background:oklch(0.94 0.006 70);overflow:hidden;">
+                <div style="height:100%;border-radius:2px;background:oklch(0.66 0.19 50);width:{{ dv.barPct }}%;"></div>
+              </div>
+              <div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;">
+                <sc-for list="{{ dv.units }}" as="x" hint-placeholder-count="0">
+                  <span title="{{ x.label }}" style="display:flex;align-items:center;gap:2px;font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.5 0.01 60);">
+                    {{ x.img }}
+                    <span>{{ x.n }}</span>
+                  </span>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div data-screen-label="Daily log" style="background:#fff;border:1px solid oklch(0.9 0.008 70);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:18px;box-shadow:0 1px 2px rgba(30,20,10,0.04);">
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:oklch(0.5 0.01 60);">Daily log</div>
+          <h2 style="margin:0;font-size:22px;font-weight:700;letter-spacing:-0.01em;">Every engagement, on record</h2>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ logDays }}" as="ld" hint-placeholder-count="0">
+            <div style="border:1px solid oklch(0.9 0.008 70);border-radius:12px;overflow:hidden;">
+              <button onClick="{{ ld.toggle }}" style="width:100%;border:0;background:oklch(0.975 0.004 70);padding:12px 16px;display:flex;align-items:center;gap:12px;text-align:left;" style-hover="background:oklch(0.96 0.006 70)">
+                <span style="font-size:14px;font-weight:700;">Day {{ ld.day }}</span>
+                <span style="font-size:12px;color:oklch(0.5 0.01 60);">{{ ld.meta }}</span>
+                <span style="flex:1;"></span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:oklch(0.66 0.19 50);">+{{ ld.total }}</span>
+                <span style="font-size:11px;color:oklch(0.6 0.01 60);">{{ ld.chevron }}</span>
+              </button>
+              <sc-if value="{{ ld.open }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;flex-direction:column;">
+                  <sc-for list="{{ ld.events }}" as="e" hint-placeholder-count="3">
+                    <div style="display:grid;grid-template-columns:64px 1fr;gap:4px 14px;padding:12px 16px;border-top:1px solid oklch(0.93 0.006 70);align-items:baseline;">
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:oklch(0.5 0.01 60);white-space:nowrap;">{{ e.time }}</span>
+                      <div style="display:flex;flex-direction:column;gap:6px;">
+                        <span style="font-size:14px;font-weight:600;">{{ e.division }} <span style="font-weight:400;color:oklch(0.5 0.01 60);">{{ e.nick }}</span></span>
+                        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                          <sc-for list="{{ e.units }}" as="x" hint-placeholder-count="0">
+                            <span style="display:flex;align-items:center;gap:5px;font-size:13px;color:oklch(0.35 0.01 60);">
+                              {{ x.img }}
+                              <span><span style="font-family:'JetBrains Mono',monospace;font-weight:600;">{{ x.n }}</span> {{ x.name }}</span>
+                            </span>
+                          </sc-for>
+                        </div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <footer style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding-top:20px;border-top:1px solid oklch(0.9 0.008 70);font-size:13px;color:oklch(0.5 0.01 60);">
+      <span style="font-weight:600;color:oklch(0.35 0.01 60);">Last updated: Day 9</span>
+      <span>Compiled from battle reports. Every unit you field is counted. <a href="Unit Icons.dc.html">Icon set →</a></span>
+    </footer>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;zeroCards&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;toggle&quot;,&quot;options&quot;:[&quot;toggle&quot;,&quot;dimmed&quot;],&quot;tsType&quot;:&quot;'toggle' | 'dimmed'&quot;,&quot;section&quot;:&quot;Unit cards&quot;},&quot;previewThirtyDays&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Chart&quot;},&quot;openLatestDay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Daily log&quot;}}">
+class Component extends DCLogic {
+  state = { d: null, showZero: false, tab: 'all', open: undefined };
+  plotRef = React.createRef();
+  componentDidMount() {
+    import('./casualty-data.js').then(d => this.setState({ d }));
+    this.ro = new ResizeObserver(() => { const w = this.plotRef.current?.clientWidth || 0; if (w !== this.state.plotW) this.setState({ plotW: w }); });
+    const tryObserve = () => { if (this.plotRef.current) { this.ro.observe(this.plotRef.current); this.setState({ plotW: this.plotRef.current.clientWidth }); } else setTimeout(tryObserve, 100); };
+    tryObserve();
+  }
+  componentWillUnmount() { this.ro?.disconnect(); }
+  renderVals() {
+    const d = this.state.d, p = this.props;
+    const zeroMode = p.zeroCards ?? 'toggle';
+    const preview = p.previewThirtyDays ?? false;
+    const openLatest = p.openLatestDay ?? true;
+    if (!d) return { tabs: [], hero: [], groups: [], bars: [], dots: [], divisions: [], logDays: [], linePoints: '', loaded: false, chartMax: 0, chartMid: 0, cumMax: 0, chartViewBox: '0 0 1 220', barMax: '56px', plotRef: this.plotRef, showZeroToggle: false, zeroToggleLabel: '' };
+    const { UNITS, CATS, COUNTS, DIVISIONS, LOG, DAYS, iconUrl } = d;
+    const byName = Object.fromEntries(UNITS.map(u => [u.name, u]));
+    const icon = n => iconUrl(byName[n], CATS[byName[n].cat].color);
+    const img = (src, name, s) => React.createElement('img', { src, alt: name, style: { width: s, height: s, display: 'block' } });
+    const units = UNITS.map(u => { const count = COUNTS[u.name] || 0; return { ...u, count, chip: '+' + count, pos: count > 0, zero: count === 0, img: img(icon(u.name), u.name, 48), imgMuted: img(iconUrl(u, 'oklch(0.74 0.01 60)'), u.name, 48), soft: CATS[u.cat].soft }; });
+    const total = units.reduce((s, u) => s + u.count, 0);
+    const showZero = zeroMode === 'dimmed' || this.state.showZero;
+    const groups = ['ground', 'air', 'naval'].map(k => {
+      const all = units.filter(u => u.cat === k).sort((a, b) => b.count - a.count || a.order - b.order);
+      const active = all.filter(u => u.count > 0);
+      const zeros = all.length - active.length;
+      return { key: k, label: CATS[k].label, color: CATS[k].color, units: showZero ? all : active, total: active.reduce((s, u) => s + u.count, 0), meta: `${active.length} of ${all.length} types hit` + (zeros && !showZero ? ` · ${zeros} untouched` : '') };
+    });
+    const zeroTotal = units.filter(u => u.count === 0).length;
+    const tabs = [['all', 'All nations'], ['nb', 'North Brazil']].map(([id, label]) => ({ id, label, count: total, active: this.state.tab === id, inactive: this.state.tab !== id, select: () => this.setState({ tab: id }) }));
+    const latest = DAYS[DAYS.length - 1];
+    const hero = [
+      { label: 'Total units destroyed', value: total, chip: '+' + latest.kills, accent: true, neutral: false, note: 'Since tracking began' },
+      { label: 'Destroyed today', value: latest.kills, chip: 'Day ' + latest.day, accent: false, neutral: true, note: 'Latest game day' },
+      { label: 'Enemy divisions that took losses', value: DIVISIONS.length, chip: '+' + DIVISIONS.length, accent: true, neutral: false, note: 'Distinct formations hit' },
+      { label: 'Days tracked', value: DAYS.length, chip: '+1', accent: true, neutral: false, note: 'Game days on record' },
+    ];
+    let days = DAYS;
+    if (preview) days = Array.from({ length: 30 }, (_, i) => ({ day: i + 1, kills: Math.max(0, Math.round(4 + 9 * Math.abs(Math.sin(i * 1.7)) + (i % 7 === 3 ? 12 : 0) - (i % 5 === 0 ? 3 : 0))) }));
+    const maxK = Math.max(1, ...days.map(x => x.kills));
+    let cum = 0; const cums = days.map(x => (cum += x.kills));
+    const cumMax = Math.max(1, cum);
+    const n = days.length;
+    const bars = days.map((x, i) => ({ day: x.day, hPct: Math.round(x.kills / maxK * 100), title: `Day ${x.day}: ${x.kills} destroyed, ${cums[i]} total`, label: n <= 12 || x.day % 5 === 0 || i === 0 || i === n - 1 ? 'D' + x.day : '' }));
+    // bars are flex:1 capped at 56px; compute positions assuming equal tracks (line container matches bar row)
+    const plotW = this.state.plotW || 0, plotH = 220, gap = 6, cap = n <= 7 ? 72 : 56;
+    const trackW = Math.min(cap, Math.max(0, (plotW - (n - 1) * gap) / n));
+    const cx = i => i * (trackW + gap) + trackW / 2;
+    const cy = i => plotH - cums[i] / cumMax * plotH;
+    const dots = days.map((x, i) => ({ x: cx(i) + 'px', y: (cums[i] / cumMax * 100) + '%' }));
+    const linePoints = plotW ? days.map((x, i) => `${cx(i).toFixed(1)},${cy(i).toFixed(1)}`).join(' ') : '';
+    const chartViewBox = `0 0 ${Math.max(1, plotW)} ${plotH}`;
+    const barMax = cap + 'px';
+    const maxDiv = Math.max(...DIVISIONS.map(x => x.total));
+    const divisions = DIVISIONS.map((x, i) => ({ rank: String(i + 1).padStart(2, '0'), name: x.name, total: x.total, barPct: Math.round(x.total / maxDiv * 100), units: x.units.map(([nm, c]) => ({ name: nm, n: c, img: img(icon(nm), nm, 20), label: `${c} ${nm}` })) }));
+    const latestDay = LOG[0]?.day;
+    const open = this.state.open ?? (openLatest ? latestDay : null);
+    const logDays = LOG.map(ld => { const t = ld.events.reduce((s, e) => s + e.units.reduce((a, [, c]) => a + c, 0), 0); const dayKills = DAYS.find(x => x.day === ld.day)?.kills ?? t; return { day: ld.day, total: dayKills, open: open === ld.day, chevron: open === ld.day ? '▲' : '▼', meta: `${ld.events.length} engagements logged`, toggle: () => this.setState({ open: open === ld.day ? null : ld.day }), events: ld.events.map(e => ({ time: e.time, division: e.division, nick: e.nick ? `“${e.nick}”` : '', units: e.units.map(([nm, c]) => ({ name: nm, n: c, img: img(icon(nm), nm, 20) })) })) }; });
+    return {
+      loaded: true, tabs, hero, groups, bars, dots, linePoints, divisions, logDays, plotRef: this.plotRef, chartViewBox, barMax,
+      chartMax: maxK, chartMid: Math.round(maxK / 2), cumMax,
+      showZeroToggle: zeroMode === 'toggle', toggleZero: () => this.setState(s => ({ showZero: !s.showZero })),
+      zeroToggleLabel: this.state.showZero ? 'Hide untouched unit types' : `Show all ${units.length} unit types (${zeroTotal} untouched)`,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>og-image template</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  /* 1200×630 link-preview image. Render with: node scripts/render-og.js */
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  .og { width: 1200px; height: 630px; padding: 84px 88px; display: flex; flex-direction: column; justify-content: space-between; }
+  .og-title { display: flex; align-items: center; gap: 28px; }
+  .og-title .mark { width: 40px; height: 40px; border-radius: 9px; }
+  .og-title h1 { font-size: 92px; }
+  .og-sub { margin: 22px 0 0 68px; font-size: 38px; color: var(--muted); font-weight: 500; }
+  .og-icons { display: flex; gap: 18px; }
+  .og-icons .well { width: 104px; height: 104px; border-radius: 20px; }
+  .og-foot { display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--border); padding-top: 26px; font-size: 24px; color: var(--muted); }
+  .og-foot b { font-family: var(--mono); color: var(--accent); font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="og">
+  <div>
+    <div class="og-title"><span class="mark"></span><h1>Casualty Report</h1></div>
+    <p class="og-sub">Enemy losses • Tracked daily</p>
+  </div>
+  <div class="og-icons" id="icons"></div>
+  <div class="og-foot"><span>Call of War · every unit destroyed, by type, division and day</span><b>Updated daily</b></div>
+</div>
+<script src="../icons.js"></script>
+<script>
+  var I = window.CasualtyIcons;
+  var pick = ['Infantry', 'Light Tank', 'Medium Tank', 'Anti Air', 'Rocket Artillery', 'Strategic Bomber', 'Naval Bomber', 'Submarine', 'Battleship'];
+  document.getElementById('icons').innerHTML = pick.map(function (n) {
+    var u = I.UNITS.find(function (x) { return x.name === n; });
+    var c = I.CATS[u.cat];
+    return '<div class="well" style="background:' + c.soft + '"><img src="' + I.iconUrl(u, c.color) + '" width="76" height="76" alt=""></div>';
+  }).join('');
+</script>
+</body>
+</html>

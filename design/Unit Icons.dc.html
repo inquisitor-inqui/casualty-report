@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; background: oklch(0.985 0.004 70); color: oklch(0.2 0.01 60); font-family: 'Public Sans', 'Helvetica Neue', Helvetica, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: oklch(0.66 0.19 50); text-decoration: none; }
+  a:hover { color: oklch(0.55 0.19 50); text-decoration: underline; }
+</style>
+</helmet>
+<div style="max-width:1200px;margin:0 auto;padding:28px 24px 64px;display:flex;flex-direction:column;gap:40px;">
+  <header style="display:flex;flex-direction:column;gap:6px;">
+    <a href="Casualty Report.dc.html" style="font-size:13px;">← Casualty Report</a>
+    <h1 style="margin:0;font-size:30px;font-weight:800;letter-spacing:-0.02em;">Unit icon set</h1>
+    <p style="margin:0;font-size:15px;color:oklch(0.5 0.01 60);max-width:60ch;">34 flat silhouettes on a 48 px grid. One fill colour per category, 2–3.5 px strokes for barrels and rigging, wheels cut out so they read on any background. Same asset at 48 px (cards) and 20 px (tables, log).</p>
+  </header>
+
+  <sc-for list="{{ groups }}" as="g" hint-placeholder-count="0">
+    <section style="display:flex;flex-direction:column;gap:16px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="width:10px;height:10px;border-radius:3px;display:inline-block;background:{{ g.color }};"></span>
+        <span style="font-size:15px;font-weight:700;">{{ g.label }}</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:oklch(0.5 0.01 60);">{{ g.count }}</span>
+        <span style="flex:1;height:1px;background:oklch(0.9 0.008 70);"></span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:oklch(0.6 0.01 60);">{{ g.color }}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;">
+        <sc-for list="{{ g.units }}" as="u" hint-placeholder-count="0">
+          <div style="background:#fff;border:1px solid oklch(0.9 0.008 70);border-radius:14px;padding:18px 16px 14px;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:0 1px 2px rgba(30,20,10,0.04);">
+            <div style="width:120px;height:120px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:{{ u.soft }};">
+              {{ u.imgLg }}
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              {{ u.imgSm }}
+              <span style="font-size:13px;font-weight:600;text-align:center;">{{ u.name }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </sc-for>
+
+  <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+    <div style="background:#fff;border:1px solid oklch(0.9 0.008 70);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:oklch(0.5 0.01 60);">Colour tokens</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+        <div style="display:flex;align-items:center;gap:10px;"><span style="width:18px;height:18px;border-radius:5px;background:oklch(0.985 0.004 70);border:1px solid oklch(0.9 0.008 70);"></span>bg · oklch(0.985 0.004 70)</div>
+        <div style="display:flex;align-items:center;gap:10px;"><span style="width:18px;height:18px;border-radius:5px;background:#fff;border:1px solid oklch(0.9 0.008 70);"></span>card · #fff · border oklch(0.9 0.008 70)</div>
+        <div style="display:flex;align-items:center;gap:10px;"><span style="width:18px;height:18px;border-radius:5px;background:oklch(0.2 0.01 60);"></span>ink · oklch(0.2 0.01 60)</div>
+        <div style="display:flex;align-items:center;gap:10px;"><span style="width:18px;height:18px;border-radius:5px;background:oklch(0.5 0.01 60);"></span>muted · oklch(0.5 0.01 60)</div>
+        <div style="display:flex;align-items:center;gap:10px;"><span style="width:18px;height:18px;border-radius:5px;background:oklch(0.66 0.19 50);"></span>accent · oklch(0.66 0.19 50)</div>
+        <div style="display:flex;align-items:center;gap:10px;"><span style="width:18px;height:18px;border-radius:5px;background:oklch(0.95 0.04 50);"></span>accent soft · oklch(0.95 0.04 50) · chip text oklch(0.52 0.17 50)</div>
+        <div style="display:flex;align-items:center;gap:10px;"><span style="width:18px;height:18px;border-radius:5px;background:oklch(0.48 0.09 130);"></span>ground · oklch(0.48 0.09 130) · soft 0.96 0.02</div>
+        <div style="display:flex;align-items:center;gap:10px;"><span style="width:18px;height:18px;border-radius:5px;background:oklch(0.48 0.09 230);"></span>air · oklch(0.48 0.09 230)</div>
+        <div style="display:flex;align-items:center;gap:10px;"><span style="width:18px;height:18px;border-radius:5px;background:oklch(0.48 0.09 275);"></span>naval · oklch(0.48 0.09 275)</div>
+        <div style="display:flex;align-items:center;gap:10px;"><span style="width:18px;height:18px;border-radius:5px;background:oklch(0.94 0.006 70);"></span>+0 chip · oklch(0.94 0.006 70) / text oklch(0.62 0.01 60)</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid oklch(0.9 0.008 70);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px;">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:oklch(0.5 0.01 60);">Type tokens</div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;">
+        <div><span style="font-weight:800;font-size:22px;letter-spacing:-0.02em;">Public Sans</span> <span style="color:oklch(0.5 0.01 60);">· UI and headings · 800 title 30, 700 h2 22, 600 labels 14, 500 body 13–15</span></div>
+        <div><span style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:22px;letter-spacing:-0.04em;">0123456789</span> <span style="color:oklch(0.5 0.01 60);">· JetBrains Mono, tabular-nums · hero 52, card count 28, division total 18, chips 12–13, axes 11</span></div>
+        <div style="color:oklch(0.5 0.01 60);">Eyebrows: 12 px, 600, uppercase, 0.08em tracking. Radii: cards 14, icon wells 12, chips pill. Shadow: 0 1px 2px rgba(30,20,10,.04) over a 1 px border.</div>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { d: null };
+  componentDidMount() { import('./casualty-data.js').then(d => this.setState({ d })); }
+  renderVals() {
+    const d = this.state.d; if (!d) return { groups: [] };
+    const { UNITS, CATS, iconUrl } = d;
+    return { groups: ['ground', 'air', 'naval'].map(k => { const us = UNITS.filter(u => u.cat === k); return { key: k, label: CATS[k].label, color: CATS[k].color, count: us.length, units: us.map(u => { const src = iconUrl(u, CATS[k].color); const img = s => React.createElement('img', { src, alt: u.name, style: { width: s, height: s, display: 'block' } }); return { name: u.name, imgLg: img(96), imgSm: img(20), soft: CATS[k].soft }; }) }; }) };
+  }
+}
+</script>
+</body>
+</html>
