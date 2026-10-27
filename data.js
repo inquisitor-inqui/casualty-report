@@ -59,6 +59,11 @@ window.CASUALTY_DATA = {
 `,
     9: `
 1:42 pm The 23rd SP Anti Air Brigade (North Brazil) lost: 1 SP Anti Air
+3:21 pm The 23rd Rocket Artillery Division (North Brazil) lost: 1 Medium Tank
+5:17 pm The 6th Battleship Flotilla (North Brazil) "Jaru" lost: 1 Destroyer, 1 Submarine
+6:02 pm The 6th Battleship Flotilla (North Brazil) "Jaru" lost: 1 Submarine
+6:17 pm The 6th Battleship Flotilla (North Brazil) "Igarassu" lost: 1 Battleship, 1 Submarine
+6:32 pm The 6th Battleship Flotilla (North Brazil) lost: 1 Battleship
 `
   }
 };
