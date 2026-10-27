@@ -12,7 +12,7 @@ window.CASUALTY_DATA = {
   liveDay: 9,
   updatedAt: "",
   days: {
-    8: `
+    7: `
 5:38 pm The 54th Carrier Battle Group (North Brazil) lost: 1 Aircraft Carrier
 5:38 pm The 26th Naval Bomber Squadron (North Brazil) lost 1 Naval Bomber over the Pacific Ocean.
 6:34 pm The 51st Medium Tank Brigade (North Brazil) lost: 1 Light Tank
@@ -23,7 +23,7 @@ window.CASUALTY_DATA = {
 9:07 pm The 73rd Armored Car Brigade (North Brazil) lost: 1 Armored Car
 8:49 am The 75th Mot. Infantry Regiment (North Brazil) lost: 1 Motorized Infantry
 `,
-    9: `
+    8: `
 10:48 am The 29th Battleship Flotilla (North Brazil) "Zaraza" lost: 1 Cruiser
 10:48 am The 29th Battleship Flotilla (North Brazil) "Zaraza" lost: 1 Battleship
 11:18 am The 29th Battleship Flotilla (North Brazil) lost: 1 Battleship
@@ -56,6 +56,9 @@ window.CASUALTY_DATA = {
 10:58 pm The 30th Mot. Infantry Division (North Brazil) lost: 1 Armored Car, 1 Infantry, 2 Light Tank
 11:05 pm The 30th Mot. Infantry Division (North Brazil) lost: 1 Motorized Infantry
 11:17 pm The 30th Mot. Infantry Division (North Brazil) lost: 1 Medium Tank
+`,
+    9: `
+1:42 pm The 23rd SP Anti Air Brigade (North Brazil) lost: 1 SP Anti Air
 `
   }
 };
