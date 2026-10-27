@@ -1,6 +1,9 @@
-// Regenerates og-image.png from scripts/og-image.html. Dev-only; needs Playwright:
-//   npm i -g playwright && npx playwright install chromium
-//   node scripts/render-og.js
+// Regenerates og-image.png from scripts/og-image.html. Dev-only; needs Playwright.
+// One-time setup (PowerShell):
+//   npm i -g playwright
+//   npx playwright install chromium
+// Then, each time:
+//   $env:NODE_PATH = (npm root -g); node scripts/render-og.js
 const path = require('path');
 const { pathToFileURL } = require('url');
 const { chromium } = require('playwright');
