@@ -1,0 +1,40 @@
+# Tests, builds and publishes the site to 99helpers on every push to main,
+# which includes every merged pull request. Can also be run by hand.
+#
+# Needs, under repo Settings → Secrets and variables → Actions:
+#   secret   HELPERS99_TOKEN  your 99helpers API token
+#   variable HELPERS99_SITE   the 99helpers site name (the part before .99helpers.site)
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One deploy at a time; a newer push waits rather than cancelling one mid-upload.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # build.sh runs tests/parse.test.js first and stops if it fails.
+      - name: Test and build
+        run: bash build.sh
+
+      - name: Publish to 99helpers
+        env:
+          HELPERS99_TOKEN: ${{ secrets.HELPERS99_TOKEN }}
+          HELPERS99_SITE: ${{ vars.HELPERS99_SITE }}
+        run: node scripts/deploy-99helpers.js dist/site
