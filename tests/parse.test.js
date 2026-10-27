@@ -9,10 +9,10 @@ const root = path.join(__dirname, '..');
 const { parseCasualtyData, summarize, parseLine } = require(path.join(root, 'parse.js'));
 const { UNITS } = require(path.join(root, 'icons.js'));
 
-// data.js is a browser script that assigns window.CASUALTY_DATA.
-function loadData() {
+// Data files are browser scripts that assign window.CASUALTY_DATA.
+function loadData(file) {
   const sandbox = { window: {} };
-  vm.runInNewContext(fs.readFileSync(path.join(root, 'data.js'), 'utf8'), sandbox);
+  vm.runInNewContext(fs.readFileSync(file, 'utf8'), sandbox, { filename: file });
   return sandbox.window.CASUALTY_DATA;
 }
 
@@ -29,14 +29,16 @@ function quietly(fn) {
   try { return { result: fn(), warns }; } finally { console.warn = orig; }
 }
 
-const data = loadData();
+// Exact numbers are checked against a frozen fixture, never against data.js,
+// which changes every day.
+const data = loadData(path.join(__dirname, 'fixtures', 'sample-data.js'));
 const parsed = parseCasualtyData(data);
 const s = summarize(parsed);
 const day = (n) => s.perDay.find((d) => d.day === n);
 const div = (name) => s.divisions.find((d) => d.name === name);
 const divUnits = (name) => Object.fromEntries(div(name).units);
 
-console.log('data.js');
+console.log('fixture (tests/fixtures/sample-data.js)');
 
 test('liveDay is 9', () => assert.strictEqual(data.liveDay, 9));
 test('Day 8 total = 10', () => assert.strictEqual(day(8).total, 10));
@@ -162,6 +164,45 @@ test('day keys are sorted numerically, events never sorted by time', () => {
   assert.deepStrictEqual(p.days.map((d) => d.day), [9, 10]);
   assert.deepStrictEqual(p.days[1].events.map((e) => e.division), ['A Division', 'B Division']);
 });
+
+// data.js: only checks that hold for any data you paste. Unparsed lines don't
+// fail the build (the page lists them); they're printed so you can spot them.
+console.log('data.js (sanity checks only)');
+
+let live = null;
+test('data.js loads and defines CASUALTY_DATA.days', () => {
+  live = loadData(path.join(root, 'data.js'));
+  assert.ok(live && typeof live === 'object', 'window.CASUALTY_DATA is missing');
+  assert.ok(live.days && typeof live.days === 'object', 'days is missing');
+});
+if (live && live.days) {
+  const lp = quietly(() => parseCasualtyData(live)).result;
+  const ls = summarize(lp);
+  test('day keys are whole numbers', () => {
+    for (const k of Object.keys(live.days)) assert.ok(/^\d+$/.test(k), 'bad day key: ' + k);
+  });
+  test('liveDay is null or one of the days', () => {
+    const days = lp.days.map((d) => d.day);
+    assert.ok(live.liveDay == null || days.includes(Number(live.liveDay)),
+      'liveDay ' + live.liveDay + ' is not one of the days (' + days.join(', ') + ')');
+  });
+  test('updatedAt is empty or a valid date', () => {
+    assert.ok(!live.updatedAt || !isNaN(new Date(live.updatedAt).getTime()), 'bad updatedAt: ' + live.updatedAt);
+  });
+  test('totals agree across days, units, divisions and nations', () => {
+    let units = 0;
+    ls.units.forEach((u) => { units += u.total; });
+    assert.strictEqual(units, ls.total, 'unit totals');
+    assert.strictEqual(ls.divisions.reduce((a, d) => a + d.total, 0), ls.total, 'division totals');
+    assert.strictEqual(ls.nations.reduce((a, n) => a + n.total, 0), ls.total, 'nation totals');
+  });
+  console.log('       ' + ls.perDay.map((d) => 'Day ' + d.day + ': ' + d.total).join(', ') + ' | cumulative: ' + ls.total);
+  if (lp.unknownUnits.length) console.log('  note unrecognised units, counted under Other: ' + lp.unknownUnits.join(', '));
+  if (lp.unparsed.length) {
+    console.log('  note ' + lp.unparsed.length + ' unparsed line(s), not counted:');
+    for (const u of lp.unparsed) console.log('         Day ' + u.day + ': ' + u.line);
+  }
+}
 
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);

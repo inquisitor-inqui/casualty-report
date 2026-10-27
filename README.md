@@ -33,7 +33,7 @@ Plain HTML, CSS and vanilla JS: no framework, no bundler, nothing to install. It
    ```
 
    (macOS, Linux or Git Bash: `./build.sh`.) The build runs the tests and stops if they fail, copies the site into `dist/site/`, stamps `updatedAt` into `dist/site/data.js` only (your `data.js` stays untouched), and creates `dist/casualty-report.zip`.
-4. Deploy `dist/site` (see below).
+4. Deploy (see below): upload `dist/casualty-report.zip` to tiiny.site, or `dist/site` to Netlify.
 
 If a line can't be read, it isn't counted and shows up in a small "unparsed lines" box at the bottom of the page. An unknown unit name still counts: it appears under "Other" with a generic icon.
 
@@ -41,7 +41,22 @@ If a line can't be read, it isn't counted and shows up in a small "unparsed line
 
 Just open `index.html` in a browser. No server needed.
 
-## Deploying with Netlify Drop
+## Deploying with tiiny.site (current host)
+
+tiiny.site takes the same zip as itch.io: `dist/casualty-report.zip`, with `index.html` at its root.
+
+**First time**
+
+1. Run `.\build.ps1`.
+2. On <https://tiiny.site>, sign in (so the site is tied to your account and you can update it later), choose a link name, and upload `dist/casualty-report.zip`.
+3. Copy the site URL into `SITE_URL` at the top of `index.html`, rebuild, and upload again as below. This makes link previews show `og-image.png`.
+
+**Every update**
+
+1. Run `.\build.ps1`.
+2. In your tiiny.site dashboard, use the site's update/edit option and upload the new `dist/casualty-report.zip`. This keeps the same link. Uploading from the home page instead creates a new site.
+
+## Deploying with Netlify Drop (alternative)
 
 **First time**
 
@@ -83,6 +98,6 @@ On this path the build script doesn't run, so:
 | `icons.js` | The 34 unit icons, ported from the design. |
 | `icons.html` | The icon set and design tokens (linked from the footer). |
 | `og-image.png` | Link-preview image. Regenerate with `node scripts/render-og.js` (needs Playwright). |
-| `tests/parse.test.js` | `node tests/parse.test.js`, no dependencies. |
+| `tests/parse.test.js` | `node tests/parse.test.js`, no dependencies. Exact numbers are checked against the frozen `tests/fixtures/sample-data.js`. Your `data.js` only gets sanity checks (it loads, `liveDay` is one of the days, totals agree), and any unparsed lines are listed. |
 | `build.ps1`, `build.sh` | Build to `dist/`. |
 | `design/` | The original Claude Design export. Reference only, not shipped. |
