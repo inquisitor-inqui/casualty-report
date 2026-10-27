@@ -15,7 +15,7 @@ $zip = Join-Path $dist 'casualty-report.zip'
 if (Test-Path $dist) { Remove-Item $dist -Recurse -Force }
 New-Item -ItemType Directory -Path $site | Out-Null
 
-$files = 'index.html', 'icons.html', 'styles.css', 'icons.js', 'parse.js', 'app.js', 'data.js', 'og-image.png'
+$files = 'index.html', 'styles.css', 'icons.js', 'parse.js', 'app.js', 'data.js', 'og-image.png'
 foreach ($f in $files) { Copy-Item (Join-Path $root $f) $site }
 
 $utf8 = New-Object System.Text.UTF8Encoding($false)

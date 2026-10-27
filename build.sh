@@ -8,7 +8,7 @@ node tests/parse.test.js || { echo "Tests failed. Build stopped."; exit 1; }
 
 rm -rf dist
 mkdir -p dist/site
-cp index.html icons.html styles.css icons.js parse.js app.js data.js og-image.png dist/site/
+cp index.html styles.css icons.js parse.js app.js data.js og-image.png dist/site/
 
 # Stamp updatedAt (dist copy only) and make og:/twitter: URLs absolute from SITE_URL.
 node -e '
