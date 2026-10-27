@@ -96,7 +96,6 @@ On this path the build script doesn't run, so:
 | `index.html`, `styles.css`, `app.js` | The page. |
 | `parse.js` | Log parser and stats (pure; runs in the browser and Node). |
 | `icons.js` | The 34 unit icons, ported from the design. |
-| `icons.html` | Local reference for the icon set and design tokens. Not linked or deployed. |
 | `og-image.png` | Link-preview image. Regenerate with `node scripts/render-og.js` (needs Playwright). |
 | `tests/parse.test.js` | `node tests/parse.test.js`, no dependencies. Exact numbers are checked against the frozen `tests/fixtures/sample-data.js`. Your `data.js` only gets sanity checks (it loads, `liveDay` is one of the days, totals agree), and any unparsed lines are listed. |
 | `build.ps1`, `build.sh` | Build to `dist/`. |

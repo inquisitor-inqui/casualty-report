@@ -178,27 +178,9 @@ h2 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
 .footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
 .footer strong { font-weight: 600; color: var(--ink-2); }
 
-/* Icon set page */
-.back { font-size: 13px; }
-.lede { margin: 0; font-size: 15px; color: var(--muted); max-width: 60ch; }
-.icon-section { display: flex; flex-direction: column; gap: 16px; }
-.icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 12px; }
-.icon-card { padding: 18px 16px 14px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-.icon-well { width: 120px; height: 120px; border-radius: 16px; display: flex; align-items: center; justify-content: center; }
-.icon-caption { display: flex; align-items: center; gap: 8px; }
-.icon-caption span { font-size: 13px; font-weight: 600; text-align: center; }
-.tokens { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 16px; }
-.token-card { padding: 22px; display: flex; flex-direction: column; gap: 12px; box-shadow: none; }
-.token-list { display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-family: var(--mono); }
-.token-list > div { display: flex; align-items: center; gap: 10px; }
-.swatch { width: 18px; height: 18px; border-radius: 5px; flex: none; }
-.type-list { display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
-
 @media (max-width: 600px) {
   .status { align-items: flex-start; }
   .event { grid-template-columns: 58px 1fr; gap: 4px 10px; }
-  .token-list { font-size: 12px; }
-  .token-list > div { align-items: flex-start; overflow-wrap: anywhere; }
 }
 
 @media (max-width: 480px) {
