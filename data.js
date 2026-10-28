@@ -59,6 +59,14 @@ window.CASUALTY_DATA = {
 `,
     9: `
 1:42 pm The 23rd SP Anti Air Brigade (North Brazil) lost: 1 SP Anti Air
+`,
+    10: `
+8:24 pm The 8th Medium Tank Division (North Brazil) lost: 1 Light Tank
+8:38 pm The 8th Medium Tank Division (North Brazil) lost: 1 Armored Car
+8:39 pm The 8th Medium Tank Division (North Brazil) lost: 1 Armored Car, 1 Light Tank
+8:39 pm The 8th Medium Tank Division (North Brazil) lost: 1 Anti Tank, 2 Armored Car, 1 Light Tank
+8:40 pm The 8th Medium Tank Division (North Brazil) lost: 1 Anti Tank, 1 Infantry
+8:53 pm The 8th Medium Tank Division (North Brazil) lost: 1 Infantry, 1 Medium Tank
 `
   }
 };
